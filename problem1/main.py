@@ -28,7 +28,6 @@ from gensim.models.ldamodel import LdaModel
 
 import nltk
 
-print('**** Problem 1 ****')
 
 df_raw = fetch_20newsgroups(shuffle=True,
                             random_state=32,
@@ -162,14 +161,3 @@ top_topics = map_topicword2doc(lda_model, X)
 news_topics = pd.concat([df_news, top_topics], axis=1)
 
 news_topics
-
-
-
-## EVALUATION
-
-import sklearn
-import re
-sklearn.metrics.mutual_info_score(
-    news_topics['topic_num'].astype(int),
-    news_topics['topic_1_name'].apply(lambda x: int(re.findall("\d+", x)[0])).tolist()
-)
