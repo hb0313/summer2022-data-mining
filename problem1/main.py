@@ -133,31 +133,31 @@ for idx, item in zip(word2topics_lda.index, word2topics_lda):
 #     plt.axis("off")
 #     plt.show()
 
-# get top3 topics for a news document
-def get_top3_topics(x):
-    top3 = list(x.sort_values(ascending=False).head(3).index) + list(x.sort_values(ascending=False).head(3).values)
-    return top3
+# # get top3 topics for a news document
+# def get_top3_topics(x):
+#     top3 = list(x.sort_values(ascending=False).head(3).index) + list(x.sort_values(ascending=False).head(3).values)
+#     return top3
 
-# map top3 topic words to news document
-def map_topicword2doc(model, X):
-    # output data frame column list
-    cols = ['topic_'+str(i+1)+'_name' for i in range(3)] + ['topic_'+str(i+1)+'_prob' for i in range(3)]
-    # doc to topic mapping
-    doc_topic = model.fit_transform(X)
-    # list of topics
-    topics = ['topic'+str(i) for i in range(20)]
-    # doc topic data frame
-    doc_topic_df = pd.DataFrame(doc_topic, columns=topics)
-    # map top 3 topics to doc
-    outdf = doc_topic_df.progress_apply(lambda x: get_top3_topics(x), axis=1)
-    # outdf is a series of list
-    # convert it to a data frame
-    outdf = pd.DataFrame(dict(zip(outdf.index, outdf.values))).T
-    outdf.columns = cols
+# # map top3 topic words to news document
+# def map_topicword2doc(model, X):
+#     # output data frame column list
+#     cols = ['topic_'+str(i+1)+'_name' for i in range(3)] + ['topic_'+str(i+1)+'_prob' for i in range(3)]
+#     # doc to topic mapping
+#     doc_topic = model.fit_transform(X)
+#     # list of topics
+#     topics = ['topic'+str(i) for i in range(20)]
+#     # doc topic data frame
+#     doc_topic_df = pd.DataFrame(doc_topic, columns=topics)
+#     # map top 3 topics to doc
+#     outdf = doc_topic_df.progress_apply(lambda x: get_top3_topics(x), axis=1)
+#     # outdf is a series of list
+#     # convert it to a data frame
+#     outdf = pd.DataFrame(dict(zip(outdf.index, outdf.values))).T
+#     outdf.columns = cols
     
-    return outdf
+#     return outdf
 
-top_topics = map_topicword2doc(lda_model, X)
-news_topics = pd.concat([df_news, top_topics], axis=1)
+# top_topics = map_topicword2doc(lda_model, X)
+# news_topics = pd.concat([df_news, top_topics], axis=1)
 
-news_topics
+# news_topics
