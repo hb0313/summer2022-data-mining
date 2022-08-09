@@ -110,54 +110,54 @@ print('Topics\t\tWords')
 for idx, item in zip(word2topics_lda.index, word2topics_lda):
     print(idx,'\t',item)
 
-terms_count = 100
-for idx,topic in enumerate(lda_model.components_):    
-    print('Topic# ',idx+1)
-    abs_topic = abs(topic)
-    topic_terms = [[terms[i],topic[i]] for i in abs_topic.argsort()[:-terms_count-1:-1]]
-    topic_terms_sorted = [[terms[i], topic[i]] for i in abs_topic.argsort()[:-terms_count - 1:-1]]
-    topic_words = []
-    for i in range(terms_count):
-        topic_words.append(topic_terms_sorted[i][0])
-    #print(','.join( word for word in topic_words))
-    #print("")
-    dict_word_frequency = {}
-    
-    for i in range(terms_count):
-        dict_word_frequency[topic_terms_sorted[i][0]] = topic_terms_sorted[i][1]    
-    wcloud = WordCloud(background_color="white",mask=None, max_words=100,\
-                        max_font_size=60,min_font_size=10,prefer_horizontal=0.9,
-                        contour_width=3,contour_color='black')
-    wcloud.generate_from_frequencies(dict_word_frequency)       
-    plt.imshow(wcloud, interpolation='bilinear')
-    plt.axis("off")
-    plt.show()
+#terms_count = 100
+#for idx,topic in enumerate(lda_model.components_):    
+#    print('Topic# ',idx+1)
+#    abs_topic = abs(topic)
+#    topic_terms = [[terms[i],topic[i]] for i in abs_topic.argsort()[:-terms_count-1:-1]]
+#    topic_terms_sorted = [[terms[i], topic[i]] for i in abs_topic.argsort()[:-terms_count - 1:-1]]
+#    topic_words = []
+#    for i in range(terms_count):
+#        topic_words.append(topic_terms_sorted[i][0])
+#    #print(','.join( word for word in topic_words))
+#    #print("")
+#    dict_word_frequency = {}
+#    
+#    for i in range(terms_count):
+#        dict_word_frequency[topic_terms_sorted[i][0]] = topic_terms_sorted[i][1]    
+#    wcloud = WordCloud(background_color="white",mask=None, max_words=100,\
+#                        max_font_size=60,min_font_size=10,prefer_horizontal=0.9,
+#                        contour_width=3,contour_color='black')
+#    wcloud.generate_from_frequencies(dict_word_frequency)       
+#    plt.imshow(wcloud, interpolation='bilinear')
+#    plt.axis("off")
+#    plt.show()
 
-# get top3 topics for a news document
-def get_top3_topics(x):
-    top3 = list(x.sort_values(ascending=False).head(3).index) + list(x.sort_values(ascending=False).head(3).values)
-    return top3
-
-# map top3 topic words to news document
-def map_topicword2doc(model, X):
-    # output data frame column list
-    cols = ['topic_'+str(i+1)+'_name' for i in range(3)] + ['topic_'+str(i+1)+'_prob' for i in range(3)]
-    # doc to topic mapping
-    doc_topic = model.fit_transform(X)
-    # list of topics
-    topics = ['topic'+str(i) for i in range(20)]
-    # doc topic data frame
-    doc_topic_df = pd.DataFrame(doc_topic, columns=topics)
-    # map top 3 topics to doc
-    outdf = doc_topic_df.progress_apply(lambda x: get_top3_topics(x), axis=1)
-    # outdf is a series of list
-    # convert it to a data frame
-    outdf = pd.DataFrame(dict(zip(outdf.index, outdf.values))).T
-    outdf.columns = cols
-    
-    return outdf
-
-top_topics = map_topicword2doc(lda_model, X)
-news_topics = pd.concat([df_news, top_topics], axis=1)
-
-news_topics
+## get top3 topics for a news document
+#def get_top3_topics(x):
+#    top3 = list(x.sort_values(ascending=False).head(3).index) + list(x.sort_values(ascending=False).head(3).values)
+#    return top3
+#
+## map top3 topic words to news document
+#def map_topicword2doc(model, X):
+#    # output data frame column list
+#    cols = ['topic_'+str(i+1)+'_name' for i in range(3)] + ['topic_'+str(i+1)+'_prob' for i in range(3)]
+#    # doc to topic mapping
+#    doc_topic = model.fit_transform(X)
+#    # list of topics
+#    topics = ['topic'+str(i) for i in range(20)]
+#    # doc topic data frame
+#    doc_topic_df = pd.DataFrame(doc_topic, columns=topics)
+#    # map top 3 topics to doc
+#    outdf = doc_topic_df.progress_apply(lambda x: get_top3_topics(x), axis=1)
+#    # outdf is a series of list
+#    # convert it to a data frame
+#    outdf = pd.DataFrame(dict(zip(outdf.index, outdf.values))).T
+#    outdf.columns = cols
+#    
+#    return outdf
+#
+#top_topics = map_topicword2doc(lda_model, X)
+#news_topics = pd.concat([df_news, top_topics], axis=1)
+#
+#news_topics
